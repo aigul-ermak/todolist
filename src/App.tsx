@@ -12,7 +12,8 @@ function App() {
         {id: v1(), title: 'cook', isDone: true},
         {id: v1(), title: 'sleep', isDone: false},
         {id: v1(), title: 'walk', isDone: false},
-        {id: v1(), title: 'run', isDone: false}
+        {id: v1(), title: 'run', isDone: false},
+        {id: v1(), title: 'workout', isDone: false}
     ])
 
     let [filter, setFilter] = useState<FilterValuesType>('all');
