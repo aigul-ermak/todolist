@@ -8,13 +8,14 @@ export type TaskType = {
 }
 
 type propsTodoListType = {
+    todoListID: string
     title: string
     tasks: Array<TaskType>
-    removeTask: (taskID: string) => void
-    changeTodoListFilter: (value: FilterValuesType) => void
-    addTask: (title: string) => void
     filter: FilterValuesType
-    changeTaskStatus: ( id: string, isDone: boolean) => void
+    removeTask: (taskID: string, todoListID: string) => void
+    changeTodoListFilter: (filterValue: FilterValuesType, todoListID: string) => void
+    addTask: (title: string, todoListID: string) => void
+    changeTaskStatus: (taskID: string, isDone: boolean, todoListID: string) => void
 }
 
 function Todolist(props: propsTodoListType) {
@@ -27,10 +28,10 @@ function Todolist(props: propsTodoListType) {
             <li>
                 <input type="checkbox"
                        checked={t.isDone}
-                       onChange={ (e) => props.changeTaskStatus(t.id, e.currentTarget.checked)}/>
+                       onChange={(e) => props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListID)}/>
                 <span className={taskClass}>{t.title}</span>
                 <button onClick={() => {
-                    props.removeTask(t.id)
+                    props.removeTask(t.id, props.todoListID)
                 }}>x
                 </button>
             </li>
@@ -38,8 +39,8 @@ function Todolist(props: propsTodoListType) {
     })
     const addTask = () => {
         const validatedTitle = title.trim()
-        if(validatedTitle) {
-            props.addTask(validatedTitle)
+        if (validatedTitle) {
+            props.addTask(validatedTitle, props.todoListID)
         } else {
             setError(true)
         }
@@ -54,9 +55,9 @@ function Todolist(props: propsTodoListType) {
             addTask()
         }
     }
-    const onAllClickHandler = () => props.changeTodoListFilter('all');
-    const onActiveClickHandler = () => props.changeTodoListFilter('active');
-    const onCompletedClickHandler = () => props.changeTodoListFilter('completed');
+    const onAllClickHandler = () => props.changeTodoListFilter('all', props.todoListID);
+    const onActiveClickHandler = () => props.changeTodoListFilter('active', props.todoListID);
+    const onCompletedClickHandler = () => props.changeTodoListFilter('completed', props.todoListID);
 
     const errorMessage = error ? <div style={{color: 'red'}}>Title is reqiured!!!</div> : null
 
