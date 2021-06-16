@@ -19,18 +19,20 @@ type propsTodoListType = {
     addTask: (title: string, todoListID: string) => void
     changeTaskStatus: (taskID: string, isDone: boolean, todoListID: string) => void
     removeTodoList: (todoListID: string) => void
-    changeTaskTitle: (taskID: string, title: string,  todoListID: string) => void
+    changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
+    changeTodoListTitle: (title: string, todoListID: string) => void
 }
 
 function Todolist(props: propsTodoListType) {
 
     const addTask = (title: string) => props.addTask(title, props.todoListID);
+    const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todoListID)
 
     const tasksJSXElements = props.tasks.map(t => {
         let taskClass = t.isDone ? 'is-done' : '';
         const onChangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
             props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListID);
-const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title,  props.todoListID)
+        const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.todoListID)
         const removeTask = () => props.removeTask(t.id, props.todoListID);
         return (
             <li className={taskClass}>
@@ -50,29 +52,30 @@ const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title,  p
 
     return (
         <div>
-            <h3>{props.title}
-                <button onClick={() => props.removeTodoList(props.todoListID)}>X</button>
-            </h3>
-            <AddItemForm addItem={addTask}/>
-            <ul>
-                {tasksJSXElements}
-            </ul>
-            <div>
-                <button
-                    className={props.filter === 'all' ? 'active-filter' : ''}
-                    onClick={onAllClickHandler}>All
-                </button>
-                <button
-                    className={props.filter === 'active' ? 'active-filter' : ''}
-                    onClick={onActiveClickHandler}>Active
-                </button>
-                <button
-                    className={props.filter === 'completed' ? 'active-filter' : ''}
-                    onClick={onCompletedClickHandler}>Completed
-                </button>
-            </div>
-        </div>
-    )
+            <h3>
+                <EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
+                <button onClick={() => props.removeTodoList(props.todoListID)}> X</button>
+        </h3>
+    <AddItemForm addItem={addTask}/>
+    <ul>
+        {tasksJSXElements}
+    </ul>
+    <div>
+        <button
+            className={props.filter === 'all' ? 'active-filter' : ''}
+            onClick={onAllClickHandler}>All
+        </button>
+        <button
+            className={props.filter === 'active' ? 'active-filter' : ''}
+            onClick={onActiveClickHandler}>Active
+        </button>
+        <button
+            className={props.filter === 'completed' ? 'active-filter' : ''}
+            onClick={onCompletedClickHandler}>Completed
+        </button>
+    </div>
+</div>
+)
 };
 export default Todolist;
 
