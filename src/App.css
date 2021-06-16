@@ -1,5 +1,9 @@
-.App {
-  margin-left: 50px;
+.active-filter {
+  background-color: red;
+}
+
+.is-done {
+  opacity: 0.5;
 }
 
 
