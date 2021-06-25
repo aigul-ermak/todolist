@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton, TextField} from '@material-ui/core';
+import {AddBox} from '@material-ui/icons';
 
 
 type addTaskFormPropsType = {
@@ -27,16 +29,26 @@ function AddItemForm(props: addTaskFormPropsType) {
         }
         setTitle('')
     }
-    const errorMessage = error ? <div style={{color: 'red'}}>Title is reqiured!!!</div> : null
+    // const errorMessage = error ? <div style={{color: 'red'}}>Title is reqiured!!!</div> : null
     return (
         <div>
-            <input
-                className={error ? 'error' : ''}
+            <TextField
+                variant={"outlined"}
+                size={"small"}
                 value={title}
                 onChange={onChangeTitle}
-                onKeyPress={onkeyPressAddItem}/>
-            <button onClick={addItem}>+</button>
-            {errorMessage}
+                onKeyPress={onkeyPressAddItem}
+            label={"Title"}
+            helperText={error && "Title is reqiured!!!"}/>
+            {/*<input*/}
+            {/*    className={error ? 'error' : ''}*/}
+            {/*    value={title}*/}
+            {/*    onChange={onChangeTitle}*/}
+            {/*    onKeyPress={onkeyPressAddItem}/>*/}
+            <IconButton onClick={addItem} color={'primary'}>
+                <AddBox/>
+            </IconButton>
+            {/*{errorMessage}*/}
         </div>
     )
 }
