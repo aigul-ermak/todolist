@@ -6,7 +6,7 @@ import AddItemForm from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 
-type TodoListType = {
+export type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -62,19 +62,16 @@ function App() {
         setTasks(copyTasks)
     }
 
+    function changeTaskTitle(id: string, title: string, todoListID: string) {
+        const copyTasks = {...tasks}
+        copyTasks[todoListID] = tasks[todoListID].map(t => t.id === id ? {...t, title} : t)
+        setTasks(copyTasks)
+    }
+    
+
+
     function changeTodoListFilter(filter: FilterValuesType, todoListID: string) {
         setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, filter: filter} : tl))
-    }
-
-    function getFilteredTasks(tl: TodoListType) {
-        switch (tl.filter) {
-            case 'active':
-                return tasks[tl.id].filter(t => !t.isDone)
-            case 'completed':
-                return tasks[tl.id].filter(t => t.isDone)
-            default:
-                return tasks[tl.id]
-        }
     }
 
     function removeTodoList(todoListID: string) {
@@ -95,14 +92,20 @@ function App() {
         setTasks({...tasks, [newTodoListID]: []})
     }
 
-    function changeTaskTitle(id: string, title: string, todoListID: string) {
-        const copyTasks = {...tasks}
-        copyTasks[todoListID] = tasks[todoListID].map(t => t.id === id ? {...t, title} : t)
-        setTasks(copyTasks)
-    }
-
     function changeTodoListTitle(title: string, todoListID: string) {
         setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, title: title} : tl))
+    }
+
+
+    function getFilteredTasks(tl: TodoListType) {
+        switch (tl.filter) {
+            case 'active':
+                return tasks[tl.id].filter(t => !t.isDone)
+            case 'completed':
+                return tasks[tl.id].filter(t => t.isDone)
+            default:
+                return tasks[tl.id]
+        }
     }
 
     const todoListComponents = todoLists.map(tl => {
